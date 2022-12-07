@@ -150,31 +150,27 @@ dotnet build
 
 * Standard Create
 
-* Engine type: MySQL
+* Engine type: PostgreSQL
 
-* Edition: MySQL Community
-
-* Engine Version: 8.0.28 (pick the latest one)
+* Engine Version: 14.5-R1 (pick the latest one)
 
 * Templates: Production
 
-* Deployment options: Multi-AZ DB instance (try Cluster as well)
+* Deployment options: Multi-AZ DB instance (TODO: try Cluster as well)
 
 * DB instance identifier: `<choose your own>`
 
-* Master username: admin
+* Master username: `postgres`
 
 * Master Password: `<choose your own>`
 
-* DB instance class: Standard classes, `db.t3.small` (or `<choose your own>`)
+* DB instance class: Burstable classes, `db.t3.small` (or `<choose your own>`)
 
 * Storage type: `gp3`
 
 * Allocated storage: `20Gb`
 
 * Enable storage autoscaling: Yes
-
-* Multi-AZ deployment: Yes (Mirroring / Always On)
 
 * Don't connect to an EC2 compute resource.
 
@@ -184,7 +180,9 @@ dotnet build
 
 * VPC security group: Create new. NB! You will need to edit the security group associated with the RDS instance to allow traffic from your EC2 instance running the "downtime detection" tool.
 
-* Create an RDS Proxy: Yes
+* Additional configuration > Database options > Initial database name: `postgres`
+
+* TODO hot to create RDS Proxy???
 
 Create an EC2 and allow it to connect to the RDS in the RDS security group.
 

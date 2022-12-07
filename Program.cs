@@ -2,7 +2,7 @@
 using Npgsql;
 
 var endpoint = "";
-var user = "admin";
+var user = "postgres";
 var password = "";
 var database = "postgres";
 var label = "";
@@ -67,7 +67,7 @@ public class CommandLineOptions
     [Option('e', "endpoint", Required = true, HelpText = "MS SQL endpoint")]
     public string? Endpoint { get; set; }
 
-    [Option('u', "user", Required = true, Default = "admin", HelpText = "DB username")]
+    [Option('u', "user", Required = true, Default = "postgres", HelpText = "DB username")]
     public string? User { get; set; }
 
     [Option('p', "password", Required = true, HelpText = "DB password")]
