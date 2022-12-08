@@ -17,13 +17,13 @@ To assess the DB availability via different endpoints run the tool against RDS e
 * via **RDS endpoint**:
 
 ```bash
-dotnet tool -- -e <rds-endpoint> -u <username> -p <password> -l RDS
+dotnet tool -- -e <rds-endpoint> -u <username> -p <password> -l RDS | tee PgSQL_RDS.log
 ```
 
 * via **RDS Proxy endpoint**:
 
 ```bash
-dotnet tool -- -e <rdsproxy-endpoint> -u <username> -p <password> -l RDSProxy
+dotnet tool -- -e <rdsproxy-endpoint> -u <username> -p <password> -l RDSProxy | tee PgSQL_RDSProxy.log
 ```
 
 Then modify the RDS database, e.g. resize the instance:
@@ -42,19 +42,42 @@ Keep watching the tool output to detect the downtime.
 
 I resized my instance from `db.t3.small` to `db.t3.large` (started TBD-TBD - the operation took ~10 min) and got following results regarding the DB downtime:
 
-* RDS endpoint: downtime TBD - TBD = TBD sec
+* RDS endpoint: downtime 11:27:05 - 11:28:11 = 66 sec
 
 ```text
-TBD
 ...
+12/8/2022 11:27:05 PM : RDS Starting a query...
+12/8/2022 11:27:05 PM : RDS ERROR: 57P01: terminating connection due to administrator command, retry #1
+12/8/2022 11:27:06 PM : RDS Opening a DB connection to xxxxx
+12/8/2022 11:27:06 PM : RDS ERROR: Failed to connect to 172.31.46.20:5432, retry #2
+12/8/2022 11:27:07 PM : RDS Opening a DB connection to xxxxx
+...
+12/8/2022 11:28:10 PM : RDS ERROR: Failed to connect to 172.31.46.20:5432, retry #36
+12/8/2022 11:28:11 PM : RDS Opening a DB connection to xxxxx
+12/8/2022 11:28:11 PM : RDS Starting a query...
+template0 en_US.UTF-8
+rdsadmin en_US.UTF-8
+template1 en_US.UTF-8
+postgres en_US.UTF-8
 ```
 
 Note that the client made TBD reconnection attempts during the DB downtime.
 
-* RDS Proxy endpoint: TBD - TBD = TBD sec:
+* RDS Proxy endpoint: 11:27:05 - 11:27:40 = 35 sec:
 
 ```text
-TBD
+12/8/2022 11:27:05 PM : PROXY Starting a query...
+12/8/2022 11:27:05 PM : PROXY ERROR: 57P01: terminating connection due to administrator command, retry #1
+12/8/2022 11:27:06 PM : PROXY Opening a DB connection to xxxxx
+12/8/2022 11:27:06 PM : PROXY Starting a query...
+12/8/2022 11:27:39 PM : PROXY ERROR: Exception while reading from stream, retry #2
+12/8/2022 11:27:40 PM : PROXY Opening a DB connection to xxxxx
+12/8/2022 11:27:40 PM : PROXY Starting a query...
+template0 en_US.UTF-8
+rdsadmin en_US.UTF-8
+template1 en_US.UTF-8
+postgres en_US.UTF-8
+...
 ```
 
 Note that it was only single reconnect attempt, which took 32 sec.  

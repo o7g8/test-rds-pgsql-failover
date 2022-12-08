@@ -22,6 +22,7 @@ Parser.Default.ParseArguments<CommandLineOptions>(args)
       });
 
 
+//;SSL Mode=Require;Trust Server Certificate=true
 var connectionString = $"Host={endpoint};Username={user};Password={password};Database={database}"; 
 
 int RetryMaxAttempts = 60;
