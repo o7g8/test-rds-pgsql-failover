@@ -22,7 +22,7 @@ Parser.Default.ParseArguments<CommandLineOptions>(args)
       });
 
 
-var connectionString = $"Host={endpoint};Username={user};Password=s{password};Database={database}"; 
+var connectionString = $"Host={endpoint};Username={user};Password={password};Database={database}"; 
 
 int RetryMaxAttempts = 60;
 int RetryIntervalPeriodInSeconds = 1;

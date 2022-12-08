@@ -152,7 +152,7 @@ dotnet build
 
 * Engine type: PostgreSQL
 
-* Engine Version: 14.5-R1 (pick the latest one)
+* Engine Version: 12.12-R1 (the versions 13 and 14 are not yet supported by RDS Proxy)
 
 * Templates: Production
 
@@ -180,9 +180,9 @@ dotnet build
 
 * VPC security group: Create new. NB! You will need to edit the security group associated with the RDS instance to allow traffic from your EC2 instance running the "downtime detection" tool.
 
-* Additional configuration > Database options > Initial database name: `postgres`
+//* Additional configuration > Database options > Initial database name: `postgres`
 
-* TODO hot to create RDS Proxy???
+* RDS Proxy: Create an RDS Proxy
 
 Create an EC2 and allow it to connect to the RDS in the RDS security group.
 
@@ -194,21 +194,23 @@ Create an EC2 and allow it to connect to the RDS in the RDS security group.
 
 * Engine type: Amazon Aurora
 
-* Edition: Amazon Aurora MySQL-Compatible Edition
+* Edition: Amazon Aurora PostgreSQL-Compatible Edition
 
-* Engine Version: Aurora (MySQL 5.7) (pick the latest one)
+* Engine Version: Aurora PostgreSQL (Compatible with PostgreSQL 12.12)
 
 * Templates: Production
 
 * DB cluster identifier: `<choose your own>`
 
-* Master username: `admin` (or `<choose your own>`)
+* Master username: `postgres` (or `<choose your own>`)
 
 * Master Password: `<choose your own>`
 
-* DB instance class: Standard classes, `db.t3.small` (or `<choose your own>`)
+* DB instance class: Standard classes, `db.t3.medium` (or `<choose your own>`)
 
-* Multi-AZ deployment: Don't create an Aurora Replica
+* Multi-AZ deployment: Create an Aurora Replica or Reader node in a different AZ (recommended for scaled availability)
+
+TODO: Try Don't create an Aurora Replica
 
 * Don't connect to an EC2 compute resource.
 
@@ -219,8 +221,6 @@ Create an EC2 and allow it to connect to the RDS in the RDS security group.
 * VPC security group: Create new. NB! You will need to edit the security group associated with the RDS instance to allow traffic from your EC2 instance running the "downtime detection" tool.
 
 * Create an RDS Proxy: Yes
-
-* Database authentication: Password authentication
 
 Create an EC2 and allow it to connect to the RDS in the RDS security group.
 
@@ -235,4 +235,3 @@ Some pieces of the code are borrowed from the following sources:
 * <https://learn.microsoft.com/en-us/azure/azure-sql/database/connect-query-dotnet-core?view=azuresql>
 
 * <https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_SQLServerMultiAZ.html>
-
