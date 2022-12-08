@@ -77,10 +77,18 @@ template0 en_US.UTF-8
 rdsadmin en_US.UTF-8
 template1 en_US.UTF-8
 postgres en_US.UTF-8
+12/8/2022 11:28:11 PM : PROXY Starting a query...
+template0 en_US.UTF-8
 ...
 ```
 
-Note that it was only single reconnect attempt, which took 32 sec.  
+Note the connection behavior: the client connects successfully to the RDS Proxy during failover, however the query itself times out after 32 sec, and the 2nd query takes 11:28:11-11:27:40 = 31 sec.
+
+Therefore we can conclude that RDS Proxy "conceals" the DB downtime behind a longer timeout: we cans see that the first data is returned almost after 1 min (which is the duration of the failover).
+
+## Multi-AZ Cluster
+
+TODO
 
 ## Aurora PostgreSQL
 
